@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private Animator _anim;
     [SerializeField]
     private AudioClip _explosionSoundClip;
-
+    private bool _enemyDestroyed = false;
     private AudioSource _audioSource;
 
     [SerializeField]
@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
     {
         CalculateMovement();
 
-        if(Time.time > _canFire)
+        if(Time.time > _canFire && _enemyDestroyed == false)
         {
             _fireRate = Random.Range(3.0f, 7.0f);
             _canFire = Time.time + _fireRate;
@@ -89,6 +89,7 @@ public class Enemy : MonoBehaviour
                 player.Damage();
             }
             _anim.SetTrigger("OnEnemyDeath");
+            _enemyDestroyed = true;
             _enemySpeed = 0;
             _audioSource.Play();
 
@@ -106,6 +107,7 @@ public class Enemy : MonoBehaviour
             }
 
             _anim.SetTrigger("OnEnemyDeath");
+            _enemyDestroyed = true;
             _enemySpeed = 0;
             _audioSource.Play();
 
