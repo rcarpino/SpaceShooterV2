@@ -8,18 +8,20 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
     private float _speedMultiplier = 2;
-
+    [SerializeField]
+    private float _thrusterBoost = 1.5f;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
     [SerializeField]
-    private float _fireRate = 0.5f;
+    private float _fireRate = 0.25f;
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
-
+    [SerializeField]
+    private int _shieldStrength = 0;
     [SerializeField]
     private bool _isTripleShotActive = false;
     [SerializeField]
@@ -29,7 +31,11 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject _shieldVisualizer;
-    
+    [SerializeField]
+    private GameObject _shieldVisualizer1;
+    [SerializeField]
+    private GameObject _shieldVisualizer2;
+
     [SerializeField]
     private GameObject _rightShieldVisualizer, _leftShieldVisualizer;
 
@@ -83,9 +89,18 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
+            
             FireLaser();
         }
-
+        if (Input.GetKeyDown(KeyCode.LeftShift) && _isSpeedBoostActive == false)
+        {
+            EngageThrusters();
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            DisengageThrusters();
+        }
+        
 
     }
 
@@ -111,10 +126,10 @@ public class Player : MonoBehaviour
     }
 
     void FireLaser()
-    { 
+    {
         _canFire = Time.time + _fireRate;
 
-        if(_isTripleShotActive == true)
+        if (_isTripleShotActive == true)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
             
@@ -130,27 +145,43 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if(_isShieldActive == true)
+        if(_shieldStrength >= 1)
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
-            return;
+            _shieldStrength--;
         }
 
-        _lives--;
+        switch (_shieldStrength)
+        {
+            case 2:
+                _shieldVisualizer.SetActive(false);
+                _shieldVisualizer1.SetActive(true);
+                break;
+            case 1:
+                _shieldVisualizer1.SetActive(false);
+                _shieldVisualizer2.SetActive(true);
+                break; ;
+            case 0:
+                _shieldVisualizer2.SetActive(false);
+                _shieldStrength--;
+                break; 
+            default:
+                _lives--;
+                _isShieldActive = false;
+                break;
+        }
+       
         
-        if(_lives == 2)
+        if(_lives == 2 && _isShieldActive == false)
         {
             _rightShieldVisualizer.SetActive(true);
         }
-        else if(_lives == 1)
+        else if(_lives == 1 && _isShieldActive == false)
         {
             _leftShieldVisualizer.SetActive(true);
         }
 
         _uiManager.UpdateLives(_lives);
-
-
+        
         if(_lives < 1)
         {
             _spawnManager.onPlayerDeath();
@@ -181,9 +212,26 @@ public class Player : MonoBehaviour
 
     public void ShieldActive()
     {
-        _isShieldActive = true;
-        _shieldVisualizer.SetActive(true);
+        if(_isShieldActive == false)
+        {
+            _isShieldActive = true;
+            _shieldStrength = 3;
+            _shieldVisualizer.SetActive(true);
+        }
+       
+        
     }
+
+    public void EngageThrusters()
+    {
+        _speed *= _thrusterBoost;
+    }
+
+    private void DisengageThrusters()
+    {
+        _speed /= _thrusterBoost;
+    }
+
 
     IEnumerator TripleShotPowerDownRoutine()
     {
