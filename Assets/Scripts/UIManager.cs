@@ -8,7 +8,13 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField]
     private Text _scoreText;
-    
+
+    [SerializeField]
+    private Text _ammoText;
+
+    [SerializeField]
+    private Text _lowAmmoText;
+
     [SerializeField]
     private Image _LivesImg;
 
@@ -48,6 +54,16 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + playerScore.ToString();
     }
 
+    public void UpdateAmmoCount(int ammoCount, int maxAmmoCount)
+    {
+        _ammoText.text = "Ammo: " + ammoCount.ToString() + " / " + maxAmmoCount.ToString();
+        if(ammoCount <= 5)
+        {
+            _lowAmmoText.gameObject.SetActive(true);
+            StartCoroutine(LowAmmoFlickerRoutine());
+        }
+    }
+
     public void UpdateLives(int currentLives)
     {
         _LivesImg.sprite = _liveSprites[currentLives];
@@ -66,6 +82,17 @@ public class UIManager : MonoBehaviour
         _restartText.gameObject.SetActive(true);
         StartCoroutine(GameOverFlickerRoutine());
     }
+    IEnumerator LowAmmoFlickerRoutine()
+    {
+        while (true)
+        {
+            _lowAmmoText.text = "LOW AMMO";
+            yield return new WaitForSeconds(0.5f);
+            _lowAmmoText.text = "";
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
 
     IEnumerator GameOverFlickerRoutine()
     {

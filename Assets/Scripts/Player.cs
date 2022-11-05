@@ -43,10 +43,13 @@ public class Player : MonoBehaviour
     private AudioClip _laserSoundClip;
     
     private AudioSource _audioSource;
-
-
+   
     [SerializeField]
     private int _score;
+    [SerializeField]
+    private int _currentAmmo = -1;
+    private int _maxAmmo = 15;
+
 
     private UIManager _uiManager;
 
@@ -57,6 +60,8 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponentInChildren<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+
+        _currentAmmo = _maxAmmo;
 
         if(_spawnManager == null)
         {
@@ -86,10 +91,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
-
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        UpdateAmmoCount();
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _currentAmmo > 0)
         {
-            
             FireLaser();
         }
         if (Input.GetKeyDown(KeyCode.LeftShift) && _isSpeedBoostActive == false)
@@ -128,7 +132,7 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
-
+        
         if (_isTripleShotActive == true)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
@@ -137,6 +141,7 @@ public class Player : MonoBehaviour
         else
         {
             Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            _currentAmmo--;
         }
         _audioSource.Play();
         //play the laser audio clip
@@ -189,6 +194,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void UpdateAmmoCount()
+    {
+        _uiManager.UpdateAmmoCount(_currentAmmo, _maxAmmo);
+        
+        
+    }
+
     public void AddtoScore(int points)
     {
         //add 10 to the score.
@@ -232,7 +244,7 @@ public class Player : MonoBehaviour
         _speed /= _thrusterBoost;
     }
 
-
+    
     IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
