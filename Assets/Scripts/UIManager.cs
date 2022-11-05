@@ -90,6 +90,7 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             _lowAmmoText.text = "";
             yield return new WaitForSeconds(0.5f);
+
         }
     }
 
