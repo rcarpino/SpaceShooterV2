@@ -24,10 +24,11 @@ public class Player : MonoBehaviour
     private int _shieldStrength = 0;
     [SerializeField]
     private bool _isTripleShotActive = false;
-    [SerializeField]
-    private bool _isSpeedBoostActive = false;
+    
     [SerializeField]
     private bool _isShieldActive = false;
+    [SerializeField]
+    private GameObject _thrusterVisual;
 
     [SerializeField]
     private GameObject _shieldVisualizer;
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _currentAmmo = -1;
     private int _maxAmmo = 15;
-
+    
 
     private UIManager _uiManager;
 
@@ -96,13 +97,15 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && _isSpeedBoostActive == false)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             EngageThrusters();
+            
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             DisengageThrusters();
+           
         }
         
 
@@ -198,7 +201,10 @@ public class Player : MonoBehaviour
     {
         _uiManager.UpdateAmmoCount(_currentAmmo, _maxAmmo);
         
-        
+    }
+    public void AmmoPowerup()
+    {
+        _currentAmmo = _maxAmmo;
     }
 
     public void AddtoScore(int points)
@@ -217,7 +223,7 @@ public class Player : MonoBehaviour
 
     public void SpeedBoostActive()
     {
-        _isSpeedBoostActive = true;
+       
         _speed *= _speedMultiplier;
         StartCoroutine(SpeedBoostPowerDownRoutine());
     }
@@ -235,13 +241,15 @@ public class Player : MonoBehaviour
     }
 
     public void EngageThrusters()
-    {
+    {   
         _speed *= _thrusterBoost;
+        _thrusterVisual.gameObject.SetActive(true);
     }
 
     private void DisengageThrusters()
     {
         _speed /= _thrusterBoost;
+        _thrusterVisual.gameObject.SetActive(false);
     }
 
     
@@ -254,7 +262,6 @@ public class Player : MonoBehaviour
     IEnumerator SpeedBoostPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        _isSpeedBoostActive = false;
         _speed /= _speedMultiplier;
     }
 }

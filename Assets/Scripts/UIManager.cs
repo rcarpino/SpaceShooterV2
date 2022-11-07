@@ -60,7 +60,6 @@ public class UIManager : MonoBehaviour
         if(ammoCount <= 5)
         {
             _lowAmmoText.gameObject.SetActive(true);
-            StartCoroutine(LowAmmoFlickerRoutine());
         }
     }
 
@@ -81,17 +80,6 @@ public class UIManager : MonoBehaviour
         _gameOverText.gameObject.SetActive(true);
         _restartText.gameObject.SetActive(true);
         StartCoroutine(GameOverFlickerRoutine());
-    }
-    IEnumerator LowAmmoFlickerRoutine()
-    {
-        while (true)
-        {
-            _lowAmmoText.text = "LOW AMMO";
-            yield return new WaitForSeconds(0.5f);
-            _lowAmmoText.text = "";
-            yield return new WaitForSeconds(0.5f);
-
-        }
     }
 
 
