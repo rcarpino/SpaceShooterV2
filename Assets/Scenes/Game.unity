@@ -362,7 +362,7 @@ RectTransform:
   - {fileID: 1787584998}
   - {fileID: 1929003994}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1319,6 +1319,7 @@ MonoBehaviour:
   - {fileID: 1723406132233324242, guid: 795c5ecf2313d8d4298088f8572eea4f, type: 3}
   - {fileID: 3470888374272427334, guid: 708ed0e57b00e6342bc8f1c851f5462d, type: 3}
   - {fileID: 7905932981983548445, guid: 1911ad0b0daca954ab50e9e175ab99e7, type: 3}
+  - {fileID: 4902523467895691975, guid: c4c419475fa7a4c4eb205b9ad90f4d40, type: 3}
 --- !u!4 &1386205592
 Transform:
   m_ObjectHideFlags: 0
@@ -2255,8 +2256,8 @@ MonoBehaviour:
   _shieldVisualizer: {fileID: 305840440}
   _shieldVisualizer1: {fileID: 795357518}
   _shieldVisualizer2: {fileID: 901795969}
-  _rightShieldVisualizer: {fileID: 1544676777}
-  _leftShieldVisualizer: {fileID: 1474800739}
+  _rightEngineDamageVisualizer: {fileID: 1544676777}
+  _leftEngineDamageVisualizer: {fileID: 1474800739}
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _score: 0
   _currentAmmo: 0
@@ -2331,7 +2332,7 @@ Transform:
   - {fileID: 1544676779}
   - {fileID: 1474800741}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1941997479
 BoxCollider2D:
@@ -2472,7 +2473,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
     - target: {fileID: 6169105911467524608, guid: 32acc8c26e163bd47890e8cf90d69fc4, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6169105911467524608, guid: 32acc8c26e163bd47890e8cf90d69fc4, type: 3}
       propertyPath: m_LocalPosition.x

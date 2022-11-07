@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     private GameObject _shieldVisualizer2;
 
     [SerializeField]
-    private GameObject _rightShieldVisualizer, _leftShieldVisualizer;
+    private GameObject _rightEngineDamageVisualizer, _leftEngineDamageVisualizer;
 
     [SerializeField]
     private AudioClip _laserSoundClip;
@@ -157,6 +157,10 @@ public class Player : MonoBehaviour
         {
             _shieldStrength--;
         }
+        else
+        {
+            _lives--;
+        }
 
         switch (_shieldStrength)
         {
@@ -173,19 +177,19 @@ public class Player : MonoBehaviour
                 _shieldStrength--;
                 break; 
             default:
-                _lives--;
                 _isShieldActive = false;
                 break;
         }
-       
+        
+
         
         if(_lives == 2 && _isShieldActive == false)
         {
-            _rightShieldVisualizer.SetActive(true);
+            _rightEngineDamageVisualizer.SetActive(true);
         }
         else if(_lives == 1 && _isShieldActive == false)
         {
-            _leftShieldVisualizer.SetActive(true);
+            _leftEngineDamageVisualizer.SetActive(true);
         }
 
         _uiManager.UpdateLives(_lives);
@@ -196,12 +200,30 @@ public class Player : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+  
 
     public void UpdateAmmoCount()
     {
         _uiManager.UpdateAmmoCount(_currentAmmo, _maxAmmo);
         
     }
+
+    public void HealthPowerup()
+    {
+        _lives++;
+        _uiManager.UpdateLives(_lives);
+        
+        if(_lives == 3)
+        {
+            _rightEngineDamageVisualizer.SetActive(false);
+        }
+        else if ( _lives == 2)
+        {
+            _leftEngineDamageVisualizer.SetActive(false);
+        }
+    }
+    
+
     public void AmmoPowerup()
     {
         _currentAmmo = _maxAmmo;
